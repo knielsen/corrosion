@@ -1,0 +1,8 @@
+*.d
+*.ll
+*.s
+*.o
+*.elf
+*.bin
+lib/
+fix-checksum
