@@ -4,6 +4,7 @@ pub use chip::arm::interrupts;
 #[path="../arm.rs"]
 mod arm;
 
+pub mod gpio;
 
 #[allow(non_snake_case)]
 pub mod rom {
