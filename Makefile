@@ -1,6 +1,6 @@
 MAKEFLAGS += -rR
 
-NAME = test
+NAME = tiva
 
 HOSTCC = gcc
 RUSTC = rustc
@@ -12,10 +12,11 @@ STAT = stat
 INSTALL = install
 RM = rm -f
 
-CHIP = lpc1343
+#CHIP = lpc1343
+CHIP = tm4c123x
 
 LDFLAGS = -nostdlib -static -Wl,-O1,--gc-sections,--as-needed -T 'src/$(CHIP)/memory.ld'
-RUSTFLAGS = --opt-level 2 
+RUSTFLAGS = --opt-level 2 -g
 TARGETFLAGS  = -C relocation-model=static -C no-stack-check -Z no-landing-pads
 TARGETFLAGS += --target=$(LLVM_TARGET_TRIPLE) -C target-cpu=$(CPU) -L lib/$(LLVM_TARGET_TRIPLE)/$(CPU) -C linker=$(GCC) -C ar=$(AR)
 
@@ -46,18 +47,14 @@ lib/$(LLVM_TARGET_TRIPLE)/$(CPU)/libcore.rlib: src/libcore/lib.rs lib/$(LLVM_TAR
 lib/boot-$(CHIP).o: src/$(CHIP)/boot.S
 	$(GCC) $(CFLAGS) -c $< -o $@
 
-fix-checksum: src/fix-checksum.c
-	$(HOSTCC) -Wall -Wextra -O2 -pipe -std=gnu99 $< -o $@
-
 %.d %.ll %.s %.o: %.rs lib/$(LLVM_TARGET_TRIPLE)/$(CPU)/libcore.rlib
 	$(RUSTC) --dep-info $*.d --emit=ir,asm,obj $(RUSTFLAGS) $(TARGETFLAGS) $<
 
 %.elf: lib/boot-$(CHIP).o %.o
 	$(GCC) $(LDFLAGS) -o $@ $^ lib/$(LLVM_TARGET_TRIPLE)/$(CPU)/libcore.rlib lib/$(LLVM_TARGET_TRIPLE)/$(CPU)/libcompiler-rt.a
 
-%.bin: %.elf fix-checksum
+%.bin: %.elf
 	$(OBJCOPY) -O binary $< $@
-	./fix-checksum $@
 	@$(STAT) -c 'Size: %s bytes' $@
 
 clean:
