@@ -6,3 +6,4 @@
 *.bin
 lib/
 fix-checksum
+*~
