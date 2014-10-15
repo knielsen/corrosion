@@ -4,7 +4,9 @@
 #![feature(globs)]
 #![feature(asm)]
 #![feature(macro_rules)]
+#![feature(phase)]
 
+#[phase(link,plugin)]
 extern crate core;
 use core::prelude::*;
 use chip::interrupts;
