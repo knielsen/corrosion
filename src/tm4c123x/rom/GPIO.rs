@@ -82,8 +82,138 @@ pub const INT_PIN_6: u32 = 0x00000040;
 pub const INT_PIN_7: u32 = 0x00000080;
 pub const INT_DMA: u32 = 0x00000100;
 
+pub fn ADCTriggerDisable(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 34) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn ADCTriggerEnable(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 33) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn DirModeGet(port: u32, pins: u8) -> u32 { unsafe {
+    let func = getfun(4, 2) as *const extern "C" fn(u32, u8) -> u32;
+    (*func)(port, pins)
+}}
+
+pub fn DirModeSet(port: u32, pins: u8, pinio: u32) { unsafe {
+    let func = getfun(4, 1) as *const extern "C" fn(u32, u8, u32);
+    (*func)(port, pins, pinio)
+}}
+
+pub fn DMATriggerDisable(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 32) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn DMATriggerEnable(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 31) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn IntTypeGet(port: u32, pin: u8) -> u32 { unsafe {
+    let func = getfun(4, 4) as *const extern "C" fn(u32, u8) -> u32;
+    (*func)(port, pin)
+}}
+
+pub fn IntTypeSet(port: u32, pin: u8, inttype: u32) { unsafe {
+    let func = getfun(4, 3) as *const extern "C" fn(u32, u8, u32);
+    (*func)(port, pin, inttype)
+}}
+
+pub fn PadConfigGet(port: u32, pin: u8, strength: *mut u32, pintype: *mut u32) { unsafe {
+    let func = getfun(4, 6) as *const extern "C" fn(u32, u8, *mut u32, *mut u32);
+    (*func)(port, pin, strength, pintype)
+}}
+
+pub fn PadConfigSet(port: u32, pin: u8, strength: u32, pintype: u32) { unsafe {
+    let func = getfun(4, 5) as *const extern "C" fn(u32, u8, u32, u32);
+    (*func)(port, pin, strength, pintype)
+}}
+
+pub fn PinConfigure(config: u32) { unsafe {
+    let func = getfun(4, 26) as *const extern "C" fn(u32);
+    (*func)(config)
+}}
+
+pub fn PinRead(port: u32, pins: u8) -> i32 { unsafe {
+    let func = getfun(4, 11) as *const extern "C" fn(u32, u8) -> i32;
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeADC(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 23) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeCAN(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 12) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeComparator(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 13) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeGPIOInput(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 14) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
 pub fn PinTypeGPIOOutput(port: u32, pins: u8) { unsafe {
     let func = getfun(4, 15) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeGPIOOutputOD(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 22) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeI2C(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 16) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeI2CSCL(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 39) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypePWM(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 17) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeQEI(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 18) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeSSI(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 19) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeTimer(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 20) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeUART(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 21) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeUSBAnalog(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 28) as *const extern "C" fn(u32, u8);
+    (*func)(port, pins)
+}}
+
+pub fn PinTypeUSBDigital(port: u32, pins: u8) { unsafe {
+    let func = getfun(4, 24) as *const extern "C" fn(u32, u8);
     (*func)(port, pins)
 }}
 
