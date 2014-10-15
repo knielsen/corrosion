@@ -13,12 +13,13 @@ INSTALL = install
 RM = rm -f
 
 #CHIP = lpc1343
-CHIP = tm4c123x
+CHIP = tm4c123gh6pm
 
 LDFLAGS = -nostdlib -static -Wl,-O1,--gc-sections,--as-needed -T 'src/$(CHIP)/memory.ld'
 RUSTFLAGS = --opt-level 2 -g
-TARGETFLAGS  = -C relocation-model=static -C no-stack-check -Z no-landing-pads
-TARGETFLAGS += --target=$(LLVM_TARGET_TRIPLE) -C target-cpu=$(CPU) -L lib/$(LLVM_TARGET_TRIPLE)/$(CPU) -C linker=$(GCC) -C ar=$(AR)
+TARGETFLAGS  = --cfg=chip_$(CHIP) --target=$(LLVM_TARGET_TRIPLE) -C target-cpu=$(CPU)
+TARGETFLAGS += -C relocation-model=static -C no-stack-check -Z no-landing-pads
+TARGETFLAGS += -L lib/$(LLVM_TARGET_TRIPLE)/$(CPU) -C linker=$(GCC) -C ar=$(AR)
 
 .PRECIOUS: %.o %.elf
 .PHONY: upload clean distclean

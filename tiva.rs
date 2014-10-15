@@ -10,8 +10,9 @@ use core::prelude::*;
 use chip::rom::SysCtl;
 use chip::rom::GPIO;
 
-#[path="src/tm4c123x/mod.rs"]
+#[cfg(chip_tm4c123gh6pm)]
 #[allow(dead_code)]
+#[path="src/tm4c123gh6pm/mod.rs"]
 mod chip;
 
 #[lang = "fail_fmt"]
