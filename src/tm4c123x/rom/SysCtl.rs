@@ -559,24 +559,20 @@ pub fn IntEnable(ints: u32) { unsafe {
     (*func)(ints)
 }}
 
-/*
 pub fn IntStatus(masked: bool) -> u32 { unsafe {
-    let func = getfun(13, 16) as *const extern "C" fn(bool) -> u32;
-    (*func)(masked)
+    let func = getfun(13, 16) as *const extern "C" fn(u8) -> u32;
+    (*func)(masked as u8)
 }}
-*/
 
 pub fn MOSCConigSet(config: u32) { unsafe {
     let func = getfun(13, 44) as *const extern "C" fn(u32);
     (*func)(config)
 }}
 
-/*
 pub fn PeripheralClockGating(enable: bool) { unsafe {
-    let func = getfun(13, 12) as *const extern "C" fn(bool);
-    (*func)(enable)
+    let func = getfun(13, 12) as *const extern "C" fn(u8);
+    (*func)(enable as u8)
 }}
-*/
 
 pub fn PeripheralDeepSleepDisable(peripheral: u32) { unsafe {
     let func = getfun(13, 11) as *const extern "C" fn(u32);
@@ -608,17 +604,15 @@ pub fn PeripheralPowerOn(peripheral: u32) { unsafe {
     (*func)(peripheral)
 }}
 
-/*
 pub fn PeripheralPresent(peripheral: u32) -> bool { unsafe {
-    let func = getfun(13, 4) as *const extern "C" fn(u32);
-    (*func)(peripheral)
+    let func = getfun(13, 4) as *const extern "C" fn(u32) -> u8;
+    (*func)(peripheral) != 0
 }}
 
 pub fn PeripheralReady(peripheral: u32) -> bool { unsafe {
-    let func = getfun(13, 35) as *const extern "C" fn(u32);
-    (*func)(peripheral)
+    let func = getfun(13, 35) as *const extern "C" fn(u32) -> u8;
+    (*func)(peripheral) != 0
 }}
-*/
 
 pub fn PeripheralReset(peripheral: u32) { unsafe {
     let func = getfun(13, 5) as *const extern "C" fn(u32);
