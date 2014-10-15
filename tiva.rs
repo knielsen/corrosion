@@ -9,6 +9,7 @@ extern crate core;
 use core::prelude::*;
 use chip::rom::SysCtl;
 use chip::rom::GPIO;
+use chip::rom::UART;
 
 #[cfg(chip_tm4c123gh6pm)]
 #[allow(dead_code)]
@@ -33,13 +34,26 @@ pub extern "C" fn main() -> ! {
         SysCtl::USE_PLL |
         SysCtl::XTAL_16MHZ |
         SysCtl::OSC_MAIN);
+
     SysCtl::PeripheralEnable(SysCtl::PERIPH_GPIOF);
     GPIO::PinTypeGPIOOutput(chip::GPIO_PORTF_BASE, RED|GREEN|BLUE);
+
+    SysCtl::PeripheralEnable(SysCtl::PERIPH_UART0);
+    SysCtl::PeripheralEnable(SysCtl::PERIPH_GPIOA);
+    GPIO::PinConfigure(chip::pinmap::PA0_U0RX);
+    GPIO::PinConfigure(chip::pinmap::PA1_U0TX);
+    GPIO::PinTypeUART(chip::GPIO_PORTA_BASE, GPIO::PIN_0 | GPIO::PIN_1);
+    UART::ConfigSetExpClk(chip::UART0_BASE, SysCtl::ClockGet(), 115200,
+        UART::CONFIG_WLEN_8 |
+        UART::CONFIG_STOP_ONE |
+        UART::CONFIG_PAR_NONE);
 
     loop {
         GPIO::PinWrite(chip::GPIO_PORTF_BASE, RED|GREEN|BLUE, RED|GREEN|BLUE);
         SysCtl::Delay(500000);
         GPIO::PinWrite(chip::GPIO_PORTF_BASE, RED|GREEN|BLUE, 0);
         SysCtl::Delay(5000000);
+
+        UART::CharPut(chip::UART0_BASE, '!' as u8);
     }
 }
