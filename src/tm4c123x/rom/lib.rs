@@ -4,7 +4,8 @@ unsafe fn getfun(table_offset: uint, fun_offset: uint) -> uint {
     table + 4*fun_offset
 }
 
-pub mod SysCtl;
 pub mod GPIO;
+pub mod Int;
+pub mod SysCtl;
 pub mod UART;
 pub mod USB;
