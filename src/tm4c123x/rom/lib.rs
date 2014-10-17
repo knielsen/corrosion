@@ -7,3 +7,4 @@ unsafe fn getfun(table_offset: uint, fun_offset: uint) -> uint {
 pub mod SysCtl;
 pub mod GPIO;
 pub mod UART;
+pub mod USB;
