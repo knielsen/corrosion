@@ -250,7 +250,7 @@ pub fn FIFOEnable(base: u32) { unsafe {
     (*func)(base)
 }}
 
-pub fn FIFOLevelGet(base: u32, txlevel: *mut u32, rxlevel: *mut u32) { unsafe {
+pub fn FIFOLevelGet(base: u32, txlevel: &mut u32, rxlevel: &mut u32) { unsafe {
     let func = getfun(1, 4) as *const extern "C" fn(u32, *mut u32, *mut u32);
     (*func)(base, txlevel, rxlevel)
 }}
@@ -301,7 +301,7 @@ pub fn RxErrorGet(base: u32) -> u32 { unsafe {
 }}
 
 pub fn SpaceAvail(base: u32) -> bool { unsafe {
-    let func = getfun(1, 29) as *const extern "C" fn(u32) -> u8;
+    let func = getfun(1, 12) as *const extern "C" fn(u32) -> u8;
     (*func)(base) != 0
 }}
 
