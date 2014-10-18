@@ -4,8 +4,8 @@ pub use chip::arm::interrupts;
 #[path="../arm.rs"]
 mod arm;
 
-#[path="../tm4c123x/gpio.rs"]
-pub mod gpio;
+#[path="../tm4c123x/gpio.rs"] pub mod gpio;
+#[path="../tm4c123x/usb.rs"]  pub mod usb;
 
 #[allow(non_snake_case)]
 #[path="../tm4c123x/rom/lib.rs"]
