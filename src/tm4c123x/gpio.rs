@@ -1,25 +1,14 @@
 use core::intrinsics::{volatile_load,volatile_store};
 
-// Hm, I get bus error when I try to use these addresses on AHB.
-// Probably some extra init is needed to use the AHB, to be researched.
-//    pub const GPIO_PORTA_BASE: uint = 0x40058000;
-//    pub const GPIO_PORTB_BASE: uint = 0x40059000;
-//    pub const GPIO_PORTC_BASE: uint = 0x4005A000;
-//    pub const GPIO_PORTD_BASE: uint = 0x4005B000;
-//    pub const GPIO_PORTE_BASE: uint = 0x4005C000;
-//    pub const GPIO_PORTF_BASE: uint = 0x4005D000;
-//    pub const GPIO_PORTG_BASE: uint = 0x4005E000;
-//    pub const GPIO_PORTH_BASE: uint = 0x4005F000;
+    pub const GPIO_PORTA_BASE: uint = 0x40058000;
+    pub const GPIO_PORTB_BASE: uint = 0x40059000;
+    pub const GPIO_PORTC_BASE: uint = 0x4005A000;
+    pub const GPIO_PORTD_BASE: uint = 0x4005B000;
+    pub const GPIO_PORTE_BASE: uint = 0x4005C000;
+    pub const GPIO_PORTF_BASE: uint = 0x4005D000;
+    pub const GPIO_PORTG_BASE: uint = 0x4005E000;
+    pub const GPIO_PORTH_BASE: uint = 0x4005F000;
 
-// These are the addresses for the APB bus.
-pub const PORTA_BASE: uint = 0x40004000;
-pub const PORTB_BASE: uint = 0x40005000;
-pub const PORTC_BASE: uint = 0x40006000;
-pub const PORTD_BASE: uint = 0x40007000;
-pub const PORTE_BASE: uint = 0x40024000;
-pub const PORTF_BASE: uint = 0x40025000;
-pub const PORTG_BASE: uint = 0x40026000;
-pub const PORTH_BASE: uint = 0x40027000;
 const GPIODATA:   uint = 0x000;
 const GPIODIR:    uint = 0x400;
 const GPIOIS:     uint = 0x404;
@@ -62,16 +51,18 @@ fn get(port: uint, offset: uint) -> u32 {
 #[inline]
 pub fn enable(port: uint) {
     // To enable a GPIO, need to set its bit in SYSCTL_RCGC2
+    // To use the AHB, need to set its bit in SYSCTL_GPIOHBCTL (0x400FE06C).
     const SYSCTL_RCGC2: uint = 0x400FE108;
-    let gpio_num =
-        if port >= PORTE_BASE {
-            4 + ((port - PORTE_BASE) >> 12)
-        } else {
-            (port - PORTA_BASE) >> 12
-        };
+    const SYSCTL_GPIOHBCTL: uint = 0x400FE06C;
+    let gpio_num = (port - GPIO_PORTA_BASE) >> 12;
     let v = unsafe { volatile_load(SYSCTL_RCGC2 as *const u32) };
     unsafe {
         volatile_store(SYSCTL_RCGC2 as *mut u32,
+                       v | (1u32 << (gpio_num)))
+    }
+    let v = unsafe { volatile_load(SYSCTL_GPIOHBCTL as *const u32) };
+    unsafe {
+        volatile_store(SYSCTL_GPIOHBCTL as *mut u32,
                        v | (1u32 << (gpio_num)))
     }
 }
